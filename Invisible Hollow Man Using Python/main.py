@@ -1,10 +1,9 @@
-
 import cv2
 import time
 import numpy as np
 
-# fourcc = cv2.VideoWriter_fourcc(*'XVID')
-# out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('output.avi', fourcc, 30.0, (640, 480))
 
 cap = cv2.VideoCapture(0)
 time.sleep(5)
@@ -23,8 +22,11 @@ while (cap.isOpened()):
     img = np.flip(img, axis=1)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
+    # ToDO
+    ''' For easy measurement I had color picker code so that hsv range of each color is calculated.
+    Please refer the code for reference'''
 
-
+    # HSV range of red color
     lower_red = np.array([0, 120, 70])
     upper_red = np.array([9, 255, 255])
     mask1 = cv2.inRange(hsv, lower_red, upper_red)
@@ -42,10 +44,10 @@ while (cap.isOpened()):
     res2 = cv2.bitwise_and(background, background, mask=mask1)
 
     finalOutput = cv2.addWeighted(res1, 1, res2, 1, 0)
-    # out.write(finalOutput)
+    out.write(finalOutput)
     cv2.imshow("magic", finalOutput)
     cv2.waitKey(10)
 
 cap.release()
-# out.release()
+out.release()
 cv2.destroyAllWindows()
